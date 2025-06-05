@@ -373,6 +373,7 @@ class QSM_Questions {
 			$index = 1;
 			foreach ( $answers as $key => $answer ) {
 				$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+				error_log('$key => $answer ----------> ' . $question_answer);
 				$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
 				
 				$index = $index + 1;
@@ -636,10 +637,13 @@ function call_tts_api($quiz_id, $question_id, $text, $is_answer = false, $index 
 			],
 			'timeout' => 60
 		]);
+		error_log( 'call_pico_tts_api ---- > ' . $api_url );
+		error_log( 'call_pico_tts_api Response ---- > ' .  wp_remote_retrieve_body($response));
 		if (is_wp_error($response)) {
 			return false;
 		}
+		error_log( 'QSM call_pico_tts_api called ---- > ' . wp_remote_retrieve_body($response) );
 		return true;
-	}
+}
 
 	
