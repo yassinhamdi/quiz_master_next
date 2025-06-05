@@ -630,13 +630,22 @@ function call_tts_api($quiz_id, $question_id, $text, $is_answer = false, $index 
 		if( $is_answer && $index > 0 ) {
 			$file_name = $file_name.'_'.$index;
 		}
-		$response = wp_remote_post($api_url, [
-			'body' => [
-				'text' => $text,
-				'filename'=> $file_name
+		$body = [
+			'text' => $text,
+			'filename'=> $file_name
+		];
+
+		$body = wp_json_encode( $body );
+
+		$options = [
+			'body'        => $body,
+			'headers'     => [
+				'Content-Type' => 'application/json',
 			],
-			'timeout' => 60
-		]);
+			'timeout'     => 60,
+			'data_format' => 'body',
+		];
+		$response = wp_remote_post( $api_url, $options );
 		error_log( 'call_pico_tts_api ---- > ' . $api_url );
 		error_log( 'call_pico_tts_api Response ---- > ' .  wp_remote_retrieve_body($response));
 		if (is_wp_error($response)) {
