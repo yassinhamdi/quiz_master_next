@@ -624,8 +624,12 @@ class QSM_Questions {
 }
 
 function call_tts_api($quiz_id, $question_id, $text, $is_answer = false, $index = -1) {
-		
-		$api_url = 'http://localhost:5000/api/tts';
+		$scheme = 'http';
+	    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+			$scheme = 'https';
+		}
+		$api_url = $scheme.'://'.$_SERVER['HTTP_HOST'].':5000/api/tts';
+		// $api_url = 'http://localhost:5000/api/tts';
 		$file_name = 'tts_'.$quiz_id.'_'.$question_id;
 		if( $is_answer && $index > 0 ) {
 			$file_name = $file_name.'_'.$index;
