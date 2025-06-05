@@ -368,6 +368,15 @@ class QSM_Questions {
 				$types,
 				array( '%d' )
 			);
+			$audio_url = call_tts_api($data['quiz_id'],$question_id,$settings['question_title']);
+			
+			$index = 1;
+			foreach ( $answers as $key => $answer ) {
+				$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+				$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
+				
+				$index = $index + 1;
+			}
 		}
 
 		if ( false === $results ) {
@@ -612,3 +621,25 @@ class QSM_Questions {
 	}
 
 }
+
+function call_tts_api($quiz_id, $question_id, $text, $is_answer = false, $index = -1) {
+		
+		$api_url = 'http://localhost:5000/api/tts';
+		$file_name = 'tts_'.$quiz_id.'_'.$question_id;
+		if( $is_answer && $index > 0 ) {
+			$file_name = $file_name.'_'.$index;
+		}
+		$response = wp_remote_post($api_url, [
+			'body' => [
+				'text' => $text,
+				'filename'=> $file_name
+			],
+			'timeout' => 60
+		]);
+		if (is_wp_error($response)) {
+			return false;
+		}
+		return true;
+	}
+
+	

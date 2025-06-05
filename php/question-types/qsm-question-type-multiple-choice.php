@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 function qmn_multiple_choice_display( $id, $question, $answers ) {
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $wpdb;
 	$answerEditor       = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'answerEditor' );
 	$required           = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$new_question_title = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'question_title' );
@@ -22,6 +22,8 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 	$image_height = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'image_size-height' );
 	$mlw_class = '';
 	$add_label = array();
+	$quiz_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $id ) );
+	
 	if ( 0 == $required ) {
 		$mlw_class = 'mlwRequiredRadio';
 	}
@@ -63,7 +65,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 					}
 					?>
 					<input type='radio' class='qmn_quiz_radio qmn-multiple-choice-input <?php echo esc_attr( $other_option_class ); ?>' name="<?php echo esc_attr( 'question' . $id ); ?>" id="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>" value="<?php echo esc_attr( $answer_index ); ?>" />
-					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>">
+					<label class="qsm-input-label" for="<?php echo esc_attr( 'question' . $id . '_' . $mlw_answer_total ); ?>"> 
 					<?php
 					if ( 'image' === $answerEditor ) {
 						$size_style = '';
@@ -89,7 +91,7 @@ function qmn_multiple_choice_display( $id, $question, $answers ) {
 						echo wp_kses_post( do_shortcode($answer_text ) );
 					}
 					?>
-					</label>
+					</label> <div class="qsm_playTTS_btn" onclick="playTTS('tts_<?php echo ($quiz_id) ?>_<?php echo ($id) ?>_<?php echo ($mlw_answer_total) ?>')">🔊</div>
 					<?php
 					echo apply_filters( 'qsm_multiple_choice_display_loop', ' ', $id, $question, $answers );
 					?>
