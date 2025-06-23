@@ -32,7 +32,9 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		<?php
 		} else {
 		?>
-		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> <div class="qsm_playTTS_btn"  onclick="playTTS('tts_<?php echo ($qmn_quiz_options->quiz_id) ?>_<?php echo ($question_id) ?>')">🔊</div></div>
+		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> <div class="qsm_playTTS_btn"  onclick="playTTS('tts_<?php echo ($qmn_quiz_options->quiz_id) ?>_<?php echo ($question_id) ?>')">
+			<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/headphones-solid.svg' ); ?>" alt="headphones" />
+		</div></div>
 		<?php
 		}
 		$title_extra_classes .= ' qsm_remove_bold';
