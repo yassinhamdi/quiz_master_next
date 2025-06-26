@@ -82,9 +82,7 @@ function qmn_horizontal_multiple_choice_display( $id, $question, $answers ) {
 								echo wp_kses_post( do_shortcode( $answer_text ) );
 							}
 							?>
-						</label><div class="qsm_playTTS_btn" onclick="playTTS('tts_<?php echo ($quiz_id) ?>_<?php echo ($id) ?>_<?php echo ($mlw_answer_total) ?>')">
-							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/headphones-solid.svg' ); ?>" alt="headphones" />
-						</div>
+						</label>
 						<?php
 						echo apply_filters( 'qsm_multiple_choice_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total );
 						?>

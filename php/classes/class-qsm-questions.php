@@ -368,16 +368,16 @@ class QSM_Questions {
 				$types,
 				array( '%d' )
 			);
-			$audio_url = call_tts_api($data['quiz_id'],$question_id,$settings['question_title']);
+			// $audio_url = call_tts_api($data['quiz_id'],$question_id,$settings['question_title']);
 			
-			$index = 1;
-			foreach ( $answers as $key => $answer ) {
-				$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
-				error_log('$key => $answer ----------> ' . $question_answer);
-				$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
+			// $index = 1;
+			// foreach ( $answers as $key => $answer ) {
+			// 	$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+			// 	error_log('$key => $answer ----------> ' . $question_answer);
+			// 	$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
 				
-				$index = $index + 1;
-			}
+			// 	$index = $index + 1;
+			// }
 		}
 
 		if ( false === $results ) {
