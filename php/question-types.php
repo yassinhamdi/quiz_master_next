@@ -27,9 +27,9 @@ include_once 'classes/question-types/class-question-review-file-upload.php';
 include_once 'classes/question-types/class-question-review-choice.php';
 
 add_action( 'init', 'qmn_question_type_multiple_choice' );
-// add_action( 'init', 'qmn_question_type_multiple_response' );
+add_action( 'init', 'qmn_question_type_multiple_response' );
 add_action( 'init', 'qmn_question_type_horizontal_multiple_choice' );
-// add_action( 'init', 'qmn_question_type_horizontal_multiple_response' );
+add_action( 'init', 'qmn_question_type_horizontal_multiple_response' );
 // add_action( 'init', 'qmn_question_type_drop_down' );
 // add_action( 'init', 'qmn_question_type_polar' );
 // add_action( 'init', 'qmn_question_type_accept' );

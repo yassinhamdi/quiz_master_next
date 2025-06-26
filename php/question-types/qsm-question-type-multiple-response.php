@@ -14,7 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function qmn_multiple_response_display( $id, $question, $answers ) {
 	$limit_mr_text = '';
-	global $mlwQuizMasterNext;
+	global $mlwQuizMasterNext, $wpdb;
+	$quiz_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $id ) );
 	$required                = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$limit_multiple_response = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'limit_multiple_response' );
 	if ( $limit_multiple_response > 0 ) {
@@ -77,7 +78,9 @@ function qmn_multiple_response_display( $id, $question, $answers ) {
 								echo wp_kses_post( do_shortcode( $answer_text ) );
 							}
 							?>
-						</label>
+						</label> <div class="qsm_playTTS_btn" onclick="playTTS('tts_<?php echo ($quiz_id) ?>_<?php echo ($id) ?>_<?php echo ($mlw_answer_total) ?>')">
+							<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/headphones-solid.svg' ); ?>" alt="headphones" />
+						</div>
 					</div>
 					<?php
 				}
