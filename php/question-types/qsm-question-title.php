@@ -24,6 +24,8 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 	}
 	do_action('qsm_question_title_function_before',$question, $question_type, $new_question_title, $question_id );
 	if ( '' !== $new_question_title ) {
+		global $wpdb;
+		$tts_audio_generated = $wpdb->get_var( $wpdb->prepare( "SELECT `tts_audio_generated` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` = %d", $question_id ) );
 		$new_question_title = $mlwQuizMasterNext->pluginHelper->qsm_language_support( htmlspecialchars_decode( $new_question_title, ENT_QUOTES ), "Question-{$question_id}", "QSM Questions");
 		$new_question_title = apply_filters( 'qsm_question_title_before', $new_question_title, $question_type, $question_id );
 		if ( in_array( intval( get_question_type( $question_id ) ), [ 12, 7, 3, 5 ], true ) ) {
@@ -33,7 +35,12 @@ function qsm_question_title_func( $question, $question_type = '', $new_question_
 		} else {
 		?>
 		<div class='mlw_qmn_new_question'><?php echo esc_html( $new_question_title ); ?> 
-	   </div>
+			<?php if ( 1 == $tts_audio_generated ) : ?>
+				<div class="qsm_playTTS_btn" onclick="playTTS('tts_<?php echo ($qmn_quiz_options->quiz_id) ?>_<?php echo ($question_id) ?>')">
+					<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/headphones-solid.svg' ); ?>" alt="headphones" />
+				</div>
+			<?php endif; ?>
+		</div>
 		<?php
 		}
 		$title_extra_classes .= ' qsm_remove_bold';

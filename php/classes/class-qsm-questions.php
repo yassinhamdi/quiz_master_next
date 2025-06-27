@@ -368,16 +368,34 @@ class QSM_Questions {
 				$types,
 				array( '%d' )
 			);
-			// $audio_url = call_tts_api($data['quiz_id'],$question_id,$settings['question_title']);
+			$audio_generation_success = true;
+
+			$audio_url = call_tts_api($data['quiz_id'],$question_id,$settings['question_title']);
+			$tts_data = json_decode($audio_url, true); 
+			if (!$tts_data || !$tts_data['path']) {
+				$audio_generation_success = false;
+			}
+			$index = 1;
+			foreach ( $answers as $key => $answer ) {
+				$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
+				error_log('$key => $answer ----------> ' . $question_answer);
+				$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
+				$tts_data = json_decode($audio_url, true); 
+				if (!$tts_data || !$tts_data['path']) {
+					$audio_generation_success = false;
+				}
+				$index = $index + 1;
+			}
+			// Mise à jour du TTS status
+			$status = $audio_generation_success ? 1 : 0 ;
 			
-			// $index = 1;
-			// foreach ( $answers as $key => $answer ) {
-			// 	$question_answer  = htmlspecialchars_decode( $answer[0], ENT_QUOTES );
-			// 	error_log('$key => $answer ----------> ' . $question_answer);
-			// 	$audio_url = call_tts_api($data['quiz_id'],$question_id,$question_answer, true, $index);
-				
-			// 	$index = $index + 1;
-			// }
+			$res =  $wpdb->update(
+				$wpdb->prefix . 'mlw_questions',
+				array( 'tts_audio_generated' => $status ),
+				array( 'question_id' => $question_id ),
+				array( '%d' ),
+				array( '%d' )
+			);
 		}
 
 		if ( false === $results ) {

@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 	global $mlwQuizMasterNext, $wpdb;
 	$quiz_id = $wpdb->get_var( $wpdb->prepare( "SELECT quiz_id FROM {$wpdb->prefix}mlw_questions WHERE question_id=%d", $id ) );
+	$tts_audio_generated = $wpdb->get_var( $wpdb->prepare( "SELECT `tts_audio_generated` FROM `{$wpdb->prefix}mlw_questions` WHERE `question_id` = %d", $id ) );
+
 	$required = $mlwQuizMasterNext->pluginHelper->get_question_setting( $id, 'required' );
 	$mlw_class = '';
 	if ( 0 == $required ) {
@@ -77,8 +79,9 @@ function qmn_horizontal_multiple_response_display( $id, $question, $answers ) {
 							echo wp_kses_post( do_shortcode( $answer_text ) );
 						}
 						?>
-					</label>
-					
+					</label><?php if ( 1 == $tts_audio_generated ) : ?> <div class="qsm_playTTS_btn" onclick="playTTS('tts_<?php echo ($quiz_id) ?>_<?php echo ($id) ?>_<?php echo ($mlw_answer_total) ?>')">
+						<img src="<?php echo esc_url( QSM_PLUGIN_URL . 'php/images/headphones-solid.svg' ); ?>" alt="headphones" />
+					</div><?php endif; ?>
 					<?php
 						echo apply_filters( 'qsm_multiple_response_horizontal_display_loop', '', $id, $question, $answer, $mlw_answer_total);
 					?>
